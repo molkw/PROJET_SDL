@@ -63,7 +63,6 @@ do{
 int compter_nombre_de_ligne_fichier(char* nom_fich)
 {
 int i=0;
-char quest[200], rep1 [50],  rep2 [50],  solution[50];
   FILE* f=NULL;
 char chaine[265]="";
 f=fopen(nom_fich,"r");
@@ -77,18 +76,20 @@ fclose(f);
 }
 void genererEnigme(enigme * e, char *nomfichier)
 {
-	int nb_ligne,ligne,k;
+	char chaine[256]="";
+	char caractere;	
+	int num_ligne=0,ligne,k;
 	FILE* f=NULL;
-	nb_ligne=compter_nombre_de_ligne_fichier( nomfichier);
+	ligne=compter_nombre_de_ligne_fichier( nomfichier);
 	ligne=aleatoire(nb_ligne);
 	f=fopen(nom_fich,"r");
 	if(f!=NULL)
 	{
-	while (fgets(chaine,256,f)!=NULL && j!=n_ligne)
+	while (fgets(chaine,256,f)!=NULL && ligne!=num_ligne)
 
-	   { n_ligne ++;}
+	   { num_ligne ++;}
 
-	if(j==n_ligne)
+	if(ligne==num_ligne)
 	{
 	k=0;
 
