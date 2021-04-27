@@ -1,6 +1,11 @@
+
 #ifndef ENIGME_H_INCLUDED
 #define ENIGME_H_INCLUDED
+/**
+ * @file <save.c>
+ * @author salim
 
+*/
 typedef struct 
 {
  char question[200];
@@ -21,9 +26,9 @@ SDL_Rect pos_s;
 
 }enigme;
 
-void afficherEnigme(enigme e, SDL_Surface * screen);
+void afficherEnigme(enigme *e, SDL_Surface * screen);
 void genererEnigme(enigme * e, char *nomfichier);
-void sauvegarder (personne p, background b, char * nomfichier);
+//void sauvegarder (personne p, background b, char * nomfichier);
 int aleatoire(int n);
 int compter_nombre_de_ligne_fichier(char* nom_fich);
 

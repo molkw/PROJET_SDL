@@ -8,39 +8,53 @@
 #include <SDL/SDL_image.h>
 #include "enigme.h"
 
-void afficherEnigme(enigme e, SDL_Surface * screen)
+void afficherEnigme(enigme *e, SDL_Surface * screen)
 {
+	int alea;	
 	TTF_Font *police1 =NULL;
 	TTF_Font *police2 =NULL;
 	SDL_Surface *fonds=NULL;
+	SDL_Color coulerNoir= {255,0,0};
 
 	TTF_Init();
   	police1 = TTF_OpenFont("police1.ttf",45);
 	police2 = TTF_OpenFont("police2.ttf",65);
 
-	SDL_Rect position_fonds;
-	position_fonds.x=0;
-	position_fonds.y=0;
-	fonds=IMG_Load("font.png");
-
-	e.q=TTF_RenderText_Blended(police1,e.question,coulerNoir);
-	e.pos_q.x=110;
-	e.pos_q.y=200;
-
-	e.repp1 =TTF_RenderText_Blended(police2,e.rep1,coulerNoir);	
-	 e.pos_repp1.x=200;
-	 e.pos_repp1.y=300;
- 
-	e.repp2 =TTF_RenderText_Blended(police2,e.rep2,coulerNoir);
-	 e.pos_repp2.x=200;
-	 e.pos_repp2.y=450;
- 	SDL_Color coulerNoir= {255,0,0};
 	
 
-	SDL_BlitSurface(fonds,NULL,screen,&position_fonds);
-	SDL_BlitSurface(e.q,NULL,screen,&e.pos_q);
-	SDL_BlitSurface(e.repp1,&position_fonds,screen,&pos_repp1);
-	SDL_BlitSurface(e.repp2,&position_fonds,screen,&pos_repp2);
+	e->q=TTF_RenderText_Blended(police1,e->question,coulerNoir);
+	e->pos_q.x=110;
+	e->pos_q.y=200;
+	
+	//alea=aleatoire(2);
+
+	//switch(alea){
+	//case 1:
+
+	 	
+	 e->pos_repp1.x=200;
+	 e->pos_repp1.y=350;	 
+	 e->pos_repp2.x=200;
+	 e->pos_repp2.y=450;
+	 //break;
+	//case 2:
+	 e->pos_repp1.x=200;
+	 e->pos_repp1.y=450;	 
+	 e->pos_repp2.x=200;
+	 e->pos_repp2.y=350;
+	// break;
+
+	//}
+ 	
+	
+	e->repp1 =TTF_RenderText_Blended(police2,e->rep1,coulerNoir);
+	e->repp2 =TTF_RenderText_Blended(police2,e->rep2,coulerNoir);
+	//printf("\n%s\n",e->rep1);
+	//printf("\n%s\n",e->rep2);
+
+	SDL_BlitSurface(e->q,NULL,screen,&e->pos_q);
+	SDL_BlitSurface(e->repp1,NULL,screen,&e->pos_repp1);
+	SDL_BlitSurface(e->repp2,NULL,screen,&e->pos_repp2);
 
 	SDL_Flip(screen);
 
@@ -54,7 +68,7 @@ int aleatoire(int n)
 {
 int alea;
 do{
-    srand(time(NULL));
+    srand(time(NULL));	
      alea=1+rand()%n;
 }while(alea==0||alea>n);
     return alea;
@@ -72,61 +86,87 @@ if(f!=NULL)
     {
         i++;  
     }
+printf("%d",i);
 fclose(f);
+}
+return i;
 }
 void genererEnigme(enigme * e, char *nomfichier)
 {
 	char chaine[256]="";
 	char caractere;	
-	int num_ligne=0,ligne,k;
-	FILE* f=NULL;
-	ligne=compter_nombre_de_ligne_fichier( nomfichier);
-	ligne=aleatoire(nb_ligne);
-	f=fopen(nom_fich,"r");
+	int num_ligne=1,ligne,k,nb_ligne,c;
+	FILE* f=NULL;	
+	nb_ligne=compter_nombre_de_ligne_fichier( nomfichier); //nombre de lignes de fichiers
+	ligne=aleatoire(nb_ligne);  //le ligne a afficher
+	
+	
+	f=fopen(nomfichier,"r");
 	if(f!=NULL)
 	{
 	while (fgets(chaine,256,f)!=NULL && ligne!=num_ligne)
 
-	   { num_ligne ++;}
-
+	   { num_ligne ++;
+	
+	}
+	printf("%s",chaine);
 	if(ligne==num_ligne)
 	{
 	k=0;
+	c=0;
 
 	do {
-	     caractere=fgetc(f);
-	     e.question[k]=caractere;
+
+	     caractere=chaine[k];
+	     e->question[c]=caractere;
 	     k++;
+	     c++;		
 	   }while(caractere!='?');
-
-
-	k=0;
-
-	do {
-	     caractere=fgetc(f);
-	     e.rep1[k]=caractere;
-	     k++;
-	   }while(caractere!='.');
-
-	k=0;
+	
+	
+	c=0;
 	
 	do {
-	     caractere=fgetc(f);
-	     e.rep2[k]=caractere;
+	     caractere=chaine[k];
+	     e->rep1[c]=caractere;
 	     k++;
+	     c++;
 	   }while(caractere!='.');
 
-	k=0;
-	
+	c=0;
 	do {
-	     caractere=fgetc(f);
-	     e.s[k]=caractere;
+	     caractere=chaine[k];
+	     e->rep2[c]=caractere;
 	     k++;
+	     c++;
 	   }while(caractere!='.');
+
+	c=0;
+	do {
+	     caractere=chaine[k];
+	     e->solution[c]=caractere;
+	     k++;
+	     c++;
+	   }while(caractere!='.');
+
+		printf("\n%s\n",e->solution);
+		printf("\n%s\n",e->rep1);
+		printf("\n%s\n",e->rep2);
 
 	}
 
 	fclose(f);
 	}
 	
+	
+}
+
+void sauvegarder (personne p, background b, char * nomfichier)
+{
+	FILE *fich=NULL;
+	fich=fopen(nomfichier,"w");
+	if(fich!=NULL)
+	{
+	
+	}
 }
