@@ -1,0 +1,2 @@
+#define SIZE_WINDOW_W 700
+#define SIZE_WINDOW_H 450
